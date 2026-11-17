@@ -1051,7 +1051,6 @@ function subscribeNewsletter() {
   min-height: 42px;
   margin-top: 8px;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
