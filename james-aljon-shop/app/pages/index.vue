@@ -591,7 +591,7 @@ const {
   data: response,
   pending,
   error,
-} = await useFetch<{ data: Product[] }>(`${STRAPI_URL}/api/shop-karts`, {
+} = await useFetch<{ data: Product[] }>(`${STRAPI_URL}/api/kart-items`, {
   lazy: true,
   query: {
     populate: "image",
