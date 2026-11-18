@@ -445,13 +445,17 @@ const filteredProducts = computed(() => {
 async function getProducts() {
   loading.value = true;
   try {
-    const response = await $fetch(`${STRAPI_URL}/api/cart-items`, {
+    const response = await $fetch(`${STRAPI_URL}/api/products`, {
       query: {
         populate: "image",
         sort: "createdAt:desc",
         "pagination[pageSize]": 100,
       },
     });
+
+    console.log("FULL PRODUCT RESPONSE:", response);
+    console.log("FIRST PRODUCT:", response.data?.[0]);
+    console.log("IMAGE DATA:", response.data?.[0]?.image);
     products.value = response.data || [];
   } catch (error) {
     console.error("Error fetching products:", error);
@@ -462,10 +466,41 @@ async function getProducts() {
   }
 }
 
+// async function getProducts() {
+//   loading.value = true;
+
+//   try {
+//     const response = await $fetch(`${STRAPI_URL}/api/products`, {
+//       query: {
+//         populate: "image",
+//         sort: "createdAt:desc",
+//         "pagination[pageSize]": 100,
+//       },
+//     });
+
+//     console.log("FULL RESPONSE:", response);
+//     console.log("FIRST PRODUCT:", response.data?.[0]);
+//     console.log("PRODUCT IMAGE:", response.data?.[0]?.image);
+
+//     products.value = response.data || [];
+
+//   } catch (error) {
+//     console.error("Error fetching products:", error);
+//     showSnackbar("Unable to load products.", "error");
+//   } finally {
+//     loading.value = false;
+//   }
+// }
 onMounted(() => {
   getProducts();
 });
-
+// function getImageUrl(image) {
+//   if (!image?.url) return "";
+//   if (image.url.startsWith("http://") || image.url.startsWith("https://")) {
+//     return image.url;
+//   }
+//   return `${STRAPI_URL}${image.url}`;
+// }
 function getImageUrl(image) {
   const imageData = Array.isArray(image) ? image[0] : image;
 
@@ -498,7 +533,7 @@ function openCreateDialog() {
   productDialog.value = true;
 }
 async function createProduct() {
-  const response = await $fetch(`${STRAPI_URL}/api/cart-items`, {
+  const response = await $fetch(`${STRAPI_URL}/api/products`, {
     method: "POST",
     body: {
       data: {
@@ -521,7 +556,7 @@ async function uploadProductImage(productId) {
   if (!file) return;
   const formData = new FormData();
   formData.append("files", file);
-  formData.append("ref", "api::cart-item.cart-item");
+  formData.append("ref", "api::product.product");
   formData.append("refId", String(productId));
   formData.append("field", "image");
   await $fetch(`${STRAPI_URL}/api/upload`, {
@@ -567,7 +602,7 @@ function openEditDialog(product) {
 async function updateProduct() {
   if (!selectedProduct.value) return;
   const response = await $fetch(
-    `${STRAPI_URL}/api/cart-items/${selectedProduct.value.documentId}`,
+    `${STRAPI_URL}/api/products/${selectedProduct.value.documentId}`,
     {
       method: "PUT",
       body: {
@@ -615,7 +650,7 @@ async function deleteProduct() {
   deleting.value = true;
   try {
     await $fetch(
-      `${STRAPI_URL}/api/cart-items/${selectedProduct.value.documentId}`,
+      `${STRAPI_URL}/api/products/${selectedProduct.value.documentId}`,
       { method: "DELETE" },
     );
     deleteDialog.value = false;
