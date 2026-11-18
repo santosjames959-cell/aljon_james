@@ -14,11 +14,7 @@
     </div>
 
     <div v-else>
-      <div class="announcement-bar">
-        <span>🛍️ WELCOME TO LAZHOPEE</span>
-        <span>DISCOVER MORE. SHOP MORE. LOVE MORE.</span>
-      </div>
-
+      
       <!-- NAVBAR -->
       <v-app-bar height="76" color="#F4F4F0" elevation="0" class="main-navbar">
         <v-container
@@ -58,6 +54,12 @@
           </div>
         </v-container>
       </v-app-bar>
+
+      <div class="announcement-bar">
+        <span>🛍️ WELCOME TO LAZHOPEE</span>
+        <span>DISCOVER MORE. SHOP MORE. LOVE MORE.</span>
+      </div>
+
 
       <!-- MOBILE DRAWER -->
       <v-navigation-drawer
